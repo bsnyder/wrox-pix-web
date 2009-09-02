@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+  <context-param>
+    <param-name>log4jConfigLocation</param-name>
+    <param-value>/WEB-INF/log4j.properties</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:/persistenceContext.xml
+    classpath:/pix-services.xml
+	classpath:org/codehaus/xfire/spring/xfire.xml
+	classpath:/client-context.xml
+	classpath:/webservice-validationclient.xml
+    </param-value>
+  </context-param>
+
+<context-param>
+<param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
+<param-value>labels</param-value>
+</context-param>
+
+<context-param>
+<param-name>javax.servlet.jsp.jstl.fmt.fallbackLocale</param-name>
+<param-value>en</param-value>
+</context-param>
+
+
+
+  <listener>
+    <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+  </listener>
+
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+
+  <servlet>
+    <servlet-name>pix</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>/WEB-INF/pix-servlet.xml /WEB-INF/pix-webflow-config.xml</param-value>
+    </init-param>
+  </servlet>
+
+  <servlet>
+    <servlet-name>dwr</servlet-name>
+    <servlet-class>org.directwebremoting.spring.DwrSpringServlet</servlet-class>
+    <init-param>
+      <param-name>debug</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>dwr</servlet-name>
+    <url-pattern>/dwr/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>pix</servlet-name>
+    <url-pattern>*.htm</url-pattern>
+  </servlet-mapping>
+  
+   <servlet-mapping>
+    <servlet-name>pix</servlet-name>
+    <url-pattern>/mycss.css</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet-mapping>
+	<servlet-name>pix</servlet-name>
+	<url-pattern>/services/*</url-pattern>
+  </servlet-mapping>
+
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+
+
+</web-app>

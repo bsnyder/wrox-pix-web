@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/webflow
+                      http://www.springframework.org/schema/webflow/spring-webflow-1.0.xsd">
+  
+  <start-actions>
+    <action bean="loginAction" method="setupForm"/>
+  </start-actions>
+  
+  <start-state idref="login" />
+
+  <view-state id="login" view="login">
+    <transition on="submit" to="userLookup" />
+  </view-state>
+  
+  <action-state id="userLookup">
+    <action bean="loginAction" method="login" />
+    <transition on="success" to="finish" />
+    <transition on="error" to="registrationFlow" />
+  </action-state>
+  
+  <subflow-state id="registrationFlow" flow="registration-flow">
+    <attribute-mapper>
+      <input-mapper>
+        <input-attribute name="user"/>
+      </input-mapper>
+      <output-mapper>
+        <output-attribute name="user" />
+      </output-mapper>
+    </attribute-mapper>
+    <transition on="finish" to="login" />
+  </subflow-state>
+  
+  <end-state id="finish" view="flowRedirect:albums-flow" />
+
+  <import resource="login-flow-beans.xml" />
+
+</flow>

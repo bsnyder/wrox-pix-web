@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:dwr="http://www.directwebremoting.org/schema/spring-dwr"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd 
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+    http://www.directwebremoting.org/schema/spring-dwr  http://www.directwebremoting.org/schema/spring-dwr-2.0.xsd
+    ">
+	<aop:spring-configured />
+
+	<bean
+		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+
+	<bean
+		class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="jpaVendorAdapter">
+			<bean
+				class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="database" value="HSQL" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="org.hsqldb.jdbcDriver" />
+		<property name="url" value="jdbc:hsqldb:hsql://localhost/pix" />
+		<property name="username" value="sa" />
+		<property name="password" value="" />
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory"
+			ref="entityManagerFactory" />
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- Application bean defintions. -->
+
+	<bean id="albumRepo"
+		class="com.wrox.beginspring.pix.dao.AlbumJpaRepository">
+
+	</bean>
+
+	<bean id="pictureRepo"
+		class="com.wrox.beginspring.pix.dao.PictureFileRepository" />
+
+	<bean id="userRepo"
+		class="com.wrox.beginspring.pix.dao.UserJpaRepository"
+		p:entity-manager-factory-ref="entityManagerFactory" />
+
+
+	<bean id="dwrRepo"
+		class="com.wrox.beginspring.pix.dwr.AlbumRepositoryJS">
+		<dwr:remote javascript="albumRepository">
+			<dwr:include method="getUserAlbums" />
+			<dwr:include method="getAlbums" />
+		</dwr:remote>
+		
+		<property name="albumRepository" ref="albumRepo"></property>
+	   
+	</bean>
+
+	<dwr:configuration>
+		<dwr:convert type="bean"
+			class="com.wrox.beginspring.pix.model.*" />
+
+	</dwr:configuration>
+	
+	<!-- Transaction Advice -->
+	
+	<!-- Aop Configuration -->
+	<aop:config>
+		<aop:pointcut id="domainOperation"
+		expression="execution(* 
+        com.wrox.beginspring.pix.dao.*.*(..))"/>
+		<aop:advisor pointcut-ref="domainOperation"
+		advice-ref="txAdvice"/>
+	</aop:config>
+
+
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+		<tx:method name="*" propagation="NEVER"/>
+		</tx:attributes>
+	</tx:advice>
+
+</beans>
+

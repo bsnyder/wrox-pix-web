@@ -1,0 +1,37 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+	>
+	
+	
+	
+<bean id="affiliateSoapAuthenticationHandler" 
+	class="com.wrox.beginspring.pix.webservice.SOAPClientAuthenticationHandler">
+	<property name="debug">
+		<value>false</value>
+	</property>
+</bean>	
+	
+<bean id="affiliateWebServiceClient" class="org.codehaus.xfire.spring.remoting.XFireClientFactoryBean" lazy-init="true">
+    <property name="serviceClass">
+      <value>com.wrox.beginspring.pix.service.AffiliateManagmentService</value>
+    </property>
+    <property name="wsdlDocumentUrl">
+      <value>http://localhost:8080/pixweb-0.0.1/services/AffilateManagment?wsdl</value>
+    </property>
+    <property name="outHandlers">
+        <list>
+       
+	
+		
+		<ref bean="affiliateSoapAuthenticationHandler"/>
+		
+
+		
+		</list>
+    </property>
+    
+</bean>
+
+</beans>

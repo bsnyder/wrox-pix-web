@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:p="http://www.springframework.org/schema/p" 
+  xmlns:aop="http://www.springframework.org/schema/aop"
+  xmlns:dwr="http://www.directwebremoting.org/schema/spring-dwr"
+  xmlns:util="http://www.springframework.org/schema/util"
+  xmlns:jetm="http://jetm.void.fm/schema/jetm_spring_config_1_2"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.springframework.org/schema/aop 
+    http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+    http://www.directwebremoting.org/schema/spring-dwr 
+    http://www.directwebremoting.org/schema/spring-dwr-2.0.xsd
+    http://www.springframework.org/schema/util 
+    http://www.springframework.org/schema/util/spring-util-2.0.xsd
+    http://jetm.void.fm/schema/jetm_spring_config_1_2
+    http://jetm.void.fm/schema/jetm_spring_config_1_2.xsd">
+    
+  <jetm:runtime />
+
+  <jetm:monitoring>
+    <jetm:bean-pattern>com.wrox.beginspring.*</jetm:bean-pattern>
+    <!--jetm:signature-pattern>
+      <jetm:bean-pattern>com.wrox.beginspring.*.LoginAction</jetm:bean-pattern>
+      <jetm:method-pattern>login(..)</jetm:method-pattern>
+    </jetm:signature-pattern-->
+  </jetm:monitoring>
+  
+  <jetm:console />
+
+  <aop:spring-configured />
+
+  <bean id="dwrHandlerMappings" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+    <property name="mappings">
+      <props>
+        <prop key="/dwr/*">dwrController</prop>
+        <prop key="*.html">dwrController</prop>
+        <prop key="/flow.htm">/flow.htm</prop>
+      </props>
+    </property>
+  </bean>
+
+  <bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping">
+    <property name="order" value="1" />
+    <property name="interceptors">
+      <list>
+        <ref bean="localeChangeInterceptor" />
+        <ref bean="themeChangeInterceptor" />
+        <ref bean="openEntityManagerInViewInterceptor" />
+      </list>
+    </property>
+  </bean>
+
+  <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
+
+  <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver" />
+
+  <bean id="themeChangeInterceptor" class="org.springframework.web.servlet.theme.ThemeChangeInterceptor" />
+
+  <bean id="themeResolver" class="org.springframework.web.servlet.theme.CookieThemeResolver" />
+
+  <bean id="openEntityManagerInViewInterceptor"
+    class="org.springframework.orm.jpa.support.OpenEntityManagerInViewInterceptor"
+    p:entity-manager-factory-ref="entityManagerFactory" />
+
+  <bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />
+  
+  <bean class="org.springframework.web.servlet.view.ResourceBundleViewResolver" 
+    p:basename="views"/>
+
+  <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" 
+    p:prefix="/WEB-INF/jsp/"
+    p:suffix=".jsp" />
+
+  <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
+    p:maxUploadSize="1000000" />
+
+  <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource" 
+    p:basename="labels" />
+
+  <bean id="methodNameResolver" class="org.springframework.web.servlet.mvc.multiaction.InternalPathMethodNameResolver" />
+
+  <!--  Start Spring MVC Application Controllers -->
+  <bean id="albumsController" class="com.wrox.beginspring.pix.web.AlbumsController" 
+    p:albumRepo-ref="albumRepo" />
+  
+  <bean id="albums2Controller" class="com.wrox.beginspring.pix.web.Albums2Controller" 
+    p:albumRepo-ref="albumRepo" />
+
+  <bean class="com.wrox.beginspring.pix.web.CreateAlbumController" 
+    p:albumRepo-ref="albumRepo">
+    <property name="labels">
+      <list>
+        <value>Holidays</value>
+        <value>Business</value>
+        <value>Family</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean class="com.wrox.beginspring.pix.web.PictureUploadController" 
+  p:albumRepo-ref="albumRepo" p:pictureRepo-ref="pictureRepo"/>
+
+  <bean class="com.wrox.beginspring.pix.web.AlbumPicturesController" p:albumRepo-ref="albumRepo"
+  p:jmsTemplate-ref="jmsTemplate"
+   />
+
+  <bean class="com.wrox.beginspring.pix.web.PictureController" p:albumRepo-ref="albumRepo" p:pictureRepo-ref="pictureRepo"/>
+  
+  <bean class="com.wrox.beginspring.pix.web.MyCssController" p:color="silver"/>
+  
+  <util:list id="labels">
+    <value>Holidays</value>
+    <value>Business</value>
+    <value>Family</value>
+  </util:list>
+
+  <!-- The DWR controller -->
+  <!--  this gets mapped to /dwr/*  -->
+  <dwr:controller id="dwrController" debug="true" />
+  
+  <!-- XFire handlers -->
+	<!-- Annotation Factory being used by XFire -->
+	
+	<bean id="xfire.annotationServiceFactory"
+        class="org.codehaus.xfire.annotations.AnnotationServiceFactory">
+        <constructor-arg index="0">
+            <ref bean="xfire.commonsAnnotations"/>
+        </constructor-arg>
+        <constructor-arg index="1">
+            <ref bean="xfire.transportManager"/>
+        </constructor-arg>
+        <constructor-arg index="2">
+            <ref bean="xfire.aegisBindingProvider"/>
+        </constructor-arg>
+    </bean>
+
+    <bean id="xfire.commonsAnnotations"
+        class="org.codehaus.xfire.annotations.jsr181.Jsr181WebAnnotations"/>
+	
+	<!-- Declare a parent bean with all properties common to all services -->
+	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="urlMap">
+            <map>
+                <entry key="/AffilateManagment">
+                    <ref bean="affilateManagmentExporter"/>
+                </entry>
+            </map>
+        </property>
+    </bean>
+    
+    <!-- Create a template to be used for multiple exporters -->
+	<bean id="xfireTemplate" abstract="true"
+	class="org.codehaus.xfire.spring.remoting.XFireExporter">
+	 	<property name="xfire">
+	        <ref bean="xfire"/>
+	    </property>
+	    <property name="inHandlers">
+			<!-- PIX Soap handler -->
+			<ref bean="photoSoapAuthenticationHandler"/>
+       	</property>
+        <property name="serviceFactory">
+       		 <ref bean="xfire.annotationServiceFactory"/>
+        </property>
+    </bean>
+
+	<!-- XFireExporter for Affiliate Service Definition -->
+	<bean id="affilateManagmentExporter" parent="xfireTemplate">
+	     <property name="serviceBean">
+	      <ref bean="affiliateService"/>
+	    </property>
+	</bean>
+	
+	
+	<bean id="photoSoapAuthenticationHandler" 
+		class="com.wrox.beginspring.pix.soaphandler.PhotoAppSoapAuthenticationHandler">
+			<property name="debug">
+				<value>true</value>
+			</property>
+    </bean>	
+
+</beans>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow
+                          http://www.springframework.org/schema/webflow/spring-webflow-1.0.xsd">
+
+  <input-mapper>
+    <input-attribute name="user"/>
+  </input-mapper>
+  
+  <start-actions>
+    <action bean="registrationAction" method="setupForm"/>
+  </start-actions>
+  
+  <start-state idref="register"/>
+	
+  <view-state id="register" view="register">
+    <transition on="submit" to="registerUser" />
+    <transition on="cancel" to="finish" />
+  </view-state>
+  
+  <action-state id="registerUser">
+    <action bean="registrationAction" method="createUser" />
+    <transition on="success" to="finish" />
+    <transition on="error" to="register" />
+  </action-state>
+  
+  <end-state id="finish">
+    <output-mapper>
+      <output-attribute name="user" />
+    </output-mapper>
+  </end-state>
+
+  <import resource="registration-flow-beans.xml" />
+	
+</flow>

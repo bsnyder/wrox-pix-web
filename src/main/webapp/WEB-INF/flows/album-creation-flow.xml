@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow
+                          http://www.springframework.org/schema/webflow/spring-webflow-1.0.xsd">
+  
+  <start-actions>
+    <action bean="albumCreationAction" method="setupForm"/>
+  </start-actions>
+  
+  <start-state idref="createAlbum" />
+  
+  <view-state id="createAlbum" view="createNewAlbum">
+    <transition on="next" to="addAlbumName" />
+  </view-state>
+	
+  <view-state id="addAlbumName" view="addAlbumName">
+    <transition on="next" to="addAlbumDescription">
+      <action bean="albumCreationAction" method="bindAndValidate" />
+    </transition>
+  </view-state>
+  
+  <view-state id="addAlbumDescription" view="addAlbumDescription">
+    <transition on="next" to="addAlbumLabels">
+      <action bean="albumCreationAction" method="bindAndValidate" />
+    </transition>
+  </view-state>
+  
+  <view-state id="addAlbumLabels" view="addAlbumLabels">
+    <transition on="next" to="addAlbumCreationDate">
+      <action bean="albumCreationAction" method="bindAndValidate" />
+    </transition>
+  </view-state>
+  
+  <view-state id="addAlbumCreationDate" view="addAlbumCreationDate">
+    <transition on="next" to="albumCreationSummary">
+      <action bean="albumCreationAction" method="bindAndValidate" />
+    </transition>
+  </view-state>
+  
+   <view-state id="albumCreationSummary" view="albumCreationSummary">
+    <transition on="create" to="processAlbumCreation">
+      <action bean="albumCreationAction" method="bindAndValidate" />
+    </transition>
+    <transition on="edit" to="addAlbumName" />
+  </view-state>
+  
+  <action-state id="processAlbumCreation">
+    <action bean="albumCreationAction" method="createAlbum" />
+    <transition on="success" to="finish" />
+    <transition on="error" to="albumCreationSummary" />
+  </action-state>
+  
+  <end-state id="finish" view="flowRedirect:albums-flow" />
+  
+  <import resource="album-creation-flow-beans.xml" />
+	
+</flow>

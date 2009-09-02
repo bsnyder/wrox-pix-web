@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="../css/begspring.css"/>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Test DWR Albums</title>
+<script type="text/javascript"
+    src="/pixweb-0.0.1/dwr/interface/albumRepository.js"> </script>
+<script type="text/javascript"
+    src="/pixweb-0.0.1/dwr/engine.js"> </script>
+<script type="text/javascript" src="/pixweb-0.0.1/dwr/util.js"></script>
+
+<script type='text/javascript'>
+var albums;
+
+function updatechoice(albs) {
+albums = albs;
+DWRUtil.removeAllOptions("albumselect");
+DWRUtil.addOptions("albumselect",albs,"name");
+}
+
+
+function setinfo() {
+selected = DWRUtil.getText("albumselect");
+alblength = albums.length;
+for(count = 0; count < alblength; count++) {
+    with (albums[count]) {
+        if (name == selected) {
+           DWRUtil.setValue("albumname", name);
+           DWRUtil.setValue("desc", description);
+           DWRUtil.setValue("createdate", creationDate);
+           
+           if (pictures.length > 0) {
+	       $("photo").src = "/pixweb-0.0.1/" + pictures[0].path.replace(/\\/g,"/") + pictures[0].fileName;
+             
+           }
+                     break;
+         }
+       }
+    }
+}
+function getchoices() {
+   albumRepository.getAlbums(updatechoice);
+}
+</script>
+</head>
+<body onload="getchoices()">
+<table border="0">
+<tr><td>
+<img src="../img/logo.gif"/>
+</td></tr>
+</table>
+<br/>
+<table border="0">
+<tr>
+<td colspan="2">
+<select id="albumselect" onchange="setinfo()">
+</select>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td colspan="2" valign="top">
+  <table border="0">
+    <tr>
+      <td class="label">Album:</td><td><div id="albumname"/></td>
+    </tr>
+  
+    <tr>
+      <td class="label">Desciprtion:</td><td><div id="desc"/></td>
+    </tr>
+    <tr>
+      <td class="label">Created on:</td><td><div id="createdate"/></td>
+    </tr>
+  </table>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+   <img id="photo" src=""/>
+</td>
+</tr>
+</table>
+
+
+
+</body>
+</html>

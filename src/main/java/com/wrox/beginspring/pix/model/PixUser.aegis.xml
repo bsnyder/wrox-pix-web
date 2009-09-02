@@ -1,0 +1,7 @@
+<mappings>
+  <mapping>
+    <property name="albums" ignore="true"/>
+    <property name="comments" ignore="true"/>
+  </mapping>
+</mappings>
+

@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+          http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
+	version="1.0">
+	<persistence-unit name="wrox" transaction-type="RESOURCE_LOCAL">
+	    <class>com.wrox.beginspring.pix.model.Affiliate</class>
+	    <class>com.wrox.beginspring.pix.model.Album</class>
+	    <class>com.wrox.beginspring.pix.model.Comment</class>
+	    <class>com.wrox.beginspring.pix.model.Hit</class>
+	    <class>com.wrox.beginspring.pix.model.HolidayAlbum</class>
+	    <class>com.wrox.beginspring.pix.model.OfficeAlbum</class>
+	    <class>com.wrox.beginspring.pix.model.PersonalAlbum</class>
+	    <class>com.wrox.beginspring.pix.model.Picture</class>
+	    <class>com.wrox.beginspring.pix.model.PixUser</class>
+	    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+		<properties>
+		   <property name="hibernate.dialect" 
+		   value="org.hibernate.dialect.HSQLDialect" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.format_sql" value="true" />
+			<property name="hibernate.hbm2ddl.auto" value="create" />
+		</properties>
+	</persistence-unit>
+</persistence>

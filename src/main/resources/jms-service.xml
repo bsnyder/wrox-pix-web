@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans.xsd">
+        
+    <import resource="jms-context.xml"/>
+        
+    <bean id="pictureService" class="com.wrox.beginspring.pix.jms.service.PicturePrintService"/>
+        
+    <bean id="listener" class="org.springframework.jms.listener.adapter.MessageListenerAdapter">
+        <property name="delegate" ref="pictureService"/>
+        <property name="defaultListenerMethod" value="receiveOrder"/>
+     </bean>
+        
+    <bean id="container" class="org.springframework.jms.listener.SimpleMessageListenerContainer">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="messageListener" ref="listener"/>
+        <property name="destination" ref="processOrderPrintQueue"/>
+    </bean>
+        
+</beans>

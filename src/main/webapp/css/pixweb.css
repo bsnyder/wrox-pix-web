@@ -1,0 +1,63 @@
+body {
+  background-color: #fff;
+  a:link: #003366; 
+  a:vlink: #003366; 
+  font-color: #000000;
+  font-family: verdana, sans-serif; 
+  font-size: 11; 
+  line-height: 0.4cm;
+}
+
+#container {  
+	padding: 0px 175px 0px 110px;  
+	margin: 0px; 
+	}
+
+#intro { 
+	min-width: 470px;
+	}
+#pageHeader { 
+	margin-bottom: 20px;
+	}
+
+#quickSummary {
+  align: left; 
+  // margin-left: 150; 
+  margin-bottom: 50px;
+  width: 40%;
+  // border-bottom: 1px solid;
+  // border-top: 1px solid;
+}
+
+#message {
+  align: left; 
+  margin-bottom: 50px;
+  width: 40%;
+  border-bottom: 1px solid;
+  border-top: 1px solid;
+}
+
+#img {
+  margin-left: 200;
+  align: center;
+}
+
+#links {
+  align: left; 
+  color: #990033;
+  font-style: bold;
+  line-height: 0.8cm;
+  // margin-left: 150; 
+  // text-align: left;
+  text-decoration: underline;
+  // width: 40%;
+}
+
+table.albums tr.shaded td {
+	background-color: #999999;
+}
+table.albums tr.unshaded td {
+	background-color: #ffffff;
+}
+
+

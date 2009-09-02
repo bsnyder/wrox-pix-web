@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/webflow
+                          http://www.springframework.org/schema/webflow/spring-webflow-1.0.xsd">
+  
+  <input-mapper>
+    <input-attribute name="userName"/>
+  </input-mapper>
+  
+  <start-actions>
+    <action bean="imageUploadAction" method="setupForm"/>
+  </start-actions>
+
+  <start-state idref="selectAlbum"/>
+  
+  <view-state id="uploadImage" view="uploadImage">
+    <transition on="next" to="selectAlbum" />
+  </view-state>
+  
+  <view-state id="selectAlbum" view="selectAlbumAndImage">
+    <render-actions>
+      <bean-action bean="imageUploadAction" method="retrieveAlbumsByUserName">
+        <method-arguments>
+          <argument expression="flowScope.userName" />
+        </method-arguments>
+        <method-result name="albumList" />
+      </bean-action>
+    </render-actions>
+    <transition on="next" to="uploadAnImage" />
+    <transition on="create" to="albumCreationFlow" />
+  </view-state>
+  
+  <action-state id="uploadAnImage">
+    <action bean="imageUploadAction" method="uploadImage" />
+    <transition on="success" to="finish">
+      <set attribute="imageUploaded" scope="flash" value="true" />
+    </transition>
+    <transition on="error" to="uploadImage" />
+  </action-state>
+  
+  <subflow-state id="albumCreationFlow" flow="album-creation-flow">
+    <attribute-mapper>
+      <input-mapper>
+        <input-attribute name="user" />
+      </input-mapper>
+    </attribute-mapper>
+    <transition on="finish" to="finish" />
+  </subflow-state>
+  
+  <end-state id="finish" view="flowRedirect:albums-flow" />
+
+  <import resource="image-upload-flow-beans.xml" />
+
+</flow>

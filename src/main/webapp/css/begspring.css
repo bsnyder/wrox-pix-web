@@ -1,0 +1,45 @@
+@CHARSET "ISO-8859-1";
+h1 {
+font-family: arial;
+font-size: 38;
+align: left;
+font-weight: bold;
+font-style: italic;
+color: green;
+}
+h2 {
+font-family: serif, times;
+font-size: 18;
+align: left;
+color: blue;
+}
+th {
+font-family: verdana, arial;
+font-size: 13;
+font-weight: bold;
+align: left;
+background-color: black;
+color: white;
+}
+td {
+font-family: verdana, arial;
+font-size: 12;
+font-style: italic;
+text-align: left;
+}
+table {
+border-style: solid;
+border-width: thin;
+}
+.label {
+font-size: 16;
+font-weight: bold;
+font-style: normal;
+text-align: right;
+}
+.name {
+font-size: 24;
+font-weight: bold;
+font-style: italic;
+font-family: serif, times roman;
+}
