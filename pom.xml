@@ -5,6 +5,18 @@
   <packaging>war</packaging>
   <version>0.0.1</version>
   <description></description>
+<pluginRepositories>
+<pluginRepository>
+<id>codehaus snapshot</id>
+<url>http://snapshots.repository.codehaus.org</url>
+<releases>
+<enabled>false</enabled>
+</releases>
+<snapshots>
+<enabled>true</enabled>
+</snapshots>
+</pluginRepository>
+</pluginRepositories>
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>
     <testSourceDirectory>src/test/java</testSourceDirectory>
