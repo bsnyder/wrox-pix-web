@@ -1,22 +1,26 @@
-<?xml version="1.0" encoding="UTF-8"?><project>
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>wrox</groupId>
   <artifactId>pixweb</artifactId>
   <packaging>war</packaging>
+  <name>Wrox Pix Web</name>
   <version>0.0.1</version>
-  <description></description>
-<pluginRepositories>
-<pluginRepository>
-<id>codehaus snapshot</id>
-<url>http://snapshots.repository.codehaus.org</url>
-<releases>
-<enabled>false</enabled>
-</releases>
-<snapshots>
-<enabled>true</enabled>
-</snapshots>
-</pluginRepository>
-</pluginRepositories>
+  <description>A sample application for the Beginning Spring Framework 2 book. </description>
+  <url>https://github.com/bsnyder/wrox-pix-web</url>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>codehaus snapshot</id>
+      <url>http://snapshots.repository.codehaus.org</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>
     <testSourceDirectory>src/test/java</testSourceDirectory>
@@ -72,18 +76,19 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>xfire-maven-plugin</artifactId>
         <version>1.0-SNAPSHOT</version>
-          <executions>
-           <execution>
-              <goals>
-                 <goal>wsgen</goal>
-              </goals>
-           </execution>
+        <executions>
+          <execution>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>wsgen</goal>
+            </goals>
+          </execution>
         </executions>
         <configuration>
           <package>com.wrox.webservice.emailvalidation.client</package>
-		  <overwrtite>true</overwrtite>
-		  <generateServerStubs>false</generateServerStubs>
-		  <forceBare>false</forceBare>
+          <overwrtite>true</overwrtite>
+          <generateServerStubs>false</generateServerStubs>
+          <forceBare>false</forceBare>
           <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
           <wsdls>
             <wsdl>http://ws.xwebservices.com/XWebEmailValidation/V2/XWebEmailValidation.wsdl</wsdl>
@@ -271,7 +276,7 @@
     <activemq-version>4.1.1</activemq-version>
     <spring-webflow-version>1.0.3</spring-webflow-version>
     <spring-version>2.0.5</spring-version>
-    <junit-version>3.8.2</junit-version>
+    <junit-version>4.4</junit-version>
     <commons-lang-version>2.1</commons-lang-version>
     <dwr-version>2.0.1</dwr-version>
     <jstl-version>1.0</jstl-version>
@@ -280,7 +285,7 @@
     <servlet-api-version>2.5</servlet-api-version>
     <log4j-version>1.2.14</log4j-version>
     <commons-fileupload-version>1.1.1</commons-fileupload-version>
-    <xfire-version>1.2.4</xfire-version>
+    <xfire-version>1.2.6</xfire-version>
     <jetm-version>1.2.1</jetm-version>
     <cglib-version>2.1_3</cglib-version>
   </properties>
